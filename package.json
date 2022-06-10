@@ -1,0 +1,24 @@
+{
+  "name": "cognigy-cc",
+  "version": "1.0.0",
+  "description": "Cognigy task for senior backend developer position",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carmonac/cognigy-coding-challenge.git"
+  },
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "cognigy"
+  ],
+  "author": "Carlos Merchán Carmona",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carmonac/cognigy-coding-challenge/issues"
+  },
+  "homepage": "https://github.com/carmonac/cognigy-coding-challenge#readme"
+}
