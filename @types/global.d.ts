@@ -1,13 +1,13 @@
-import { Handler } from 'express';
+import { Handler } from "express";
 
 export {};
 
 declare global {
-    declare namespace CarApi {
-        interface ServerOptions {
-            globalMiddleware?: Handler[];
-            Controllers?: any[];
-            Services?: any[];
-        }
+  declare namespace CarApi {
+    interface ServerOptions {
+      globalMiddleware?: Handler[];
+      Controllers?: any[];
+      Services?: any[];
     }
+  }
 }

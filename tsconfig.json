@@ -1,24 +1,26 @@
 {
   "compilerOptions": {
-    "target": "es2019",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "experimentalDecorators": true,                      /* Enable experimental support for TC39 stage 2 draft decorators. */
-    "emitDecoratorMetadata": true,                       /* Emit design-type metadata for decorated declarations in source files. */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-    "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-    "moduleResolution": "node",                          /* Specify how TypeScript looks up a file from a given module specifier. */
-    "baseUrl": ".",                                      /* Specify the base directory to resolve non-relative module names. */
-    "paths": { "*": ["node_modules"] },                  /* Specify a set of entries that re-map imports to additional lookup locations. */                    /* Only output d.ts files and not JavaScript files. */
-    "sourceMap": true,                                   /* Create source map files for emitted JavaScript files. */
-    "outDir": "./dist",                                  /* Specify an output folder for all emitted files. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
-    "strict": true,                                      /* Enable all strict type-checking options. */
-    "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
-    "typeRoots": ["./node_modules/@types", "./@types"],  /* Specify a list of folders to be used for type definition files. */
-    "isolatedModules": true,                             /* Specify whether to use the '--isolatedModules' flag with 'tsc'. */
+    "target": "es2019" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
+    "emitDecoratorMetadata": true /* Emit design-type metadata for decorated declarations in source files. */,
+    "module": "commonjs" /* Specify what module code is generated. */,
+    "rootDir": "./src" /* Specify the root folder within your source files. */,
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
+    "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
+    "paths": {
+      "*": ["node_modules"]
+    } /* Specify a set of entries that re-map imports to additional lookup locations. */ /* Only output d.ts files and not JavaScript files. */,
+    "sourceMap": true /* Create source map files for emitted JavaScript files. */,
+    "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+    "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+    "strict": true /* Enable all strict type-checking options. */,
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./@types"
+    ] /* Specify a list of folders to be used for type definition files. */,
+    "isolatedModules": true /* Specify whether to use the '--isolatedModules' flag with 'tsc'. */
   },
-  "include": [
-    "./src",
-    "./@types"
-  ],
+  "include": ["./src", "./@types"]
 }

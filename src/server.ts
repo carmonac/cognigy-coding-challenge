@@ -8,20 +8,20 @@ import morgan from "morgan";
 let app: ServerApp;
 
 export const init = async () => {
-    app = new ServerApp({
-        globalMiddleware: [
-            compression(),
-            helmet(),
-            cors(),
-            morgan(config.morganFormat),
-        ],
-        Controllers: [],
-        Services: []
-    });
+  app = new ServerApp({
+    globalMiddleware: [
+      compression(),
+      helmet(),
+      cors(),
+      morgan(config.morganFormat),
+    ],
+    Controllers: [],
+    Services: [],
+  });
 
-    app.start(config.port);
+  app.start(config.port);
 };
 
 export const end = async () => {
-    app.stop();
+  app.stop();
 };
