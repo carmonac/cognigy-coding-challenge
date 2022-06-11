@@ -1,4 +1,4 @@
-import Controller from "./controller.decorator";
+import Controller from "./controller";
 import { MetadataKeys } from "../utils/metadata.keys";
 
 describe("@Controller", () => {

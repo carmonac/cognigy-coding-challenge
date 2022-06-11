@@ -1,5 +1,5 @@
-import { Get, Post, Put, Delete, Patch } from "./method.decorator";
-import Controller from "./controller.decorator";
+import { Get, Post, Put, Delete, Patch } from "./method";
+import Controller from "./controller";
 import { MetadataKeys, RouterData } from "../utils/metadata.keys";
 
 describe("@Method", () => {
