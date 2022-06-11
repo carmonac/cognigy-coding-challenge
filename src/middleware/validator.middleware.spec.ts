@@ -40,4 +40,20 @@ describe("DataValidator", () => {
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalled();
   });
+
+  it("should send error because year is greater than current year", () => {
+    const currentYear = new Date().getFullYear();
+    req.body = {
+      year: 2023,
+    };
+    DataValidator({
+      type: "object",
+      properties: {
+        year: { type: "number", maximum: currentYear },
+      },
+      required: ["year"],
+    })(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.send).toHaveBeenCalled();
+  });
 });

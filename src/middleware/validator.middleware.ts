@@ -8,7 +8,12 @@ export const DataValidator =
     const validate = ajv.compile(schema);
     const valid = validate(req.body);
     if (!valid) {
-      res.status(400).send(validate.errors);
+      res.status(400).send(
+        validate.errors?.map((e) => ({
+          property: e.propertyName,
+          message: e.message,
+        }))
+      );
     } else {
       next();
     }
