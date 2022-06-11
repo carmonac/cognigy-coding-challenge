@@ -79,7 +79,7 @@ export class ServerApp {
         );
 
         const handlerNameString = String(handlerName);
-        if (middleware && middleware.length > 0) {
+        if (middleware?.length > 0) {
           expressRouter[method](
             path,
             ...middleware,
@@ -104,7 +104,7 @@ export class ServerApp {
       );
 
       // register router
-      if (controllerMiddleware && controllerMiddleware.length > 0) {
+      if (controllerMiddleware?.length > 0) {
         this._instance.use(basePath, ...controllerMiddleware, expressRouter);
       } else {
         this._instance.use(basePath, expressRouter);
