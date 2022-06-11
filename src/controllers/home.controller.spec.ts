@@ -1,6 +1,5 @@
 import HomeController from "./home.controller";
-import { getMockReq, getMockRes } from '@jest-mock/express';
-
+import { getMockReq, getMockRes } from "@jest-mock/express";
 
 describe("HomeController", () => {
   it("should return 'Hello World!'", () => {
@@ -11,6 +10,5 @@ describe("HomeController", () => {
 
     controller.index(req, res);
     expect(res.send).toHaveBeenCalledWith("Hello Cognigy!");
-
   });
 });

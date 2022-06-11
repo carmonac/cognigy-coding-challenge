@@ -2,6 +2,7 @@ import express, { Application, Handler, Router } from "express";
 import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
+import { Container } from "./utils/container";
 
 export class ServerApp {
   private readonly _instance: Application;
@@ -11,6 +12,7 @@ export class ServerApp {
     this._instance = express();
     this.registerGlobalMiddleware(options.globalMiddleware);
     this.registerControllers(options.controllers);
+    this.registerServices(options.services);
   }
 
   get instance(): Application {
@@ -37,7 +39,16 @@ export class ServerApp {
     }
   }
 
-  // private registerServices(services: any[]): void {}
+  private registerServices(services: any[] | undefined): void {
+    if (!services) {
+      console.info("No services registered");
+      return;
+    }
+    services.forEach((ServiceClass) => {
+      const instance = new ServiceClass();
+      Container.register(ServiceClass.name, instance);
+    });
+  }
 
   private registerControllers(controllers: any[] | undefined): void {
     if (!controllers) {
