@@ -18,9 +18,6 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "typeRoots": [
       "./node_modules/@types",
-      "./@types"
     ] /* Specify a list of folders to be used for type definition files. */,
-    "isolatedModules": true /* Specify whether to use the '--isolatedModules' flag with 'tsc'. */
-  },
-  "include": ["./src", "./@types"]
+  }
 }

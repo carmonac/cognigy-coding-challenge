@@ -1,11 +1,12 @@
 import express, { Application, Handler } from "express";
 import { Server } from "http";
+import { ServerOptions } from "./interfaces/serveroptions";
 
 export class ServerApp {
   private readonly _instance: Application;
   private process!: Server;
 
-  constructor(options: CarApi.ServerOptions) {
+  constructor(options: ServerOptions) {
     this._instance = express();
     this.registerGlobalMiddleware(options.globalMiddleware);
   }
