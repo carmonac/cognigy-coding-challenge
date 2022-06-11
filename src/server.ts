@@ -5,6 +5,7 @@ import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
 import HomeController from "./controllers/home.controller";
+import CarController from "./controllers/car.controller";
 
 let app: ServerApp;
 
@@ -16,7 +17,7 @@ export const init = () => {
       cors(),
       morgan(config.morganFormat),
     ],
-    controllers: [HomeController],
+    controllers: [HomeController, CarController],
     services: [],
   });
 
