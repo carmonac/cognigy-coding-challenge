@@ -3,7 +3,7 @@ import Controller from "./controller";
 import { MetadataKeys, RouterData } from "../utils/metadata.keys";
 
 describe("@Method", () => {
-  it("should add route info in metadata", () => {
+  it("should add route info in metadata to methods", () => {
     @Controller("/")
     class TestController {
       @Get("/test")
