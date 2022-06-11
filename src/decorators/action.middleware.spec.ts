@@ -16,11 +16,14 @@ describe("@ActionMiddleware", () => {
       testGet() {}
     }
     const testController = new TestController();
-    const middleware = Reflect.getMetadata(MetadataKeys.MIDDLEWARE, testController, "testGet");
+    const middleware = Reflect.getMetadata(
+      MetadataKeys.MIDDLEWARE,
+      testController,
+      "testGet"
+    );
     expect(middleware).toBeDefined();
     expect(middleware.length).toBe(2);
     expect(middleware[0]()).toBe("middleware2");
     expect(middleware[1]()).toBe("middleware1");
-
   });
 });

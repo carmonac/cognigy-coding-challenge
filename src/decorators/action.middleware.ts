@@ -1,7 +1,7 @@
 import { MetadataKeys } from "../utils/metadata.keys";
 import { RequestParamHandler } from "express";
 
-export const ActionMiddleware = 
+export const ActionMiddleware =
   (middleware: RequestParamHandler): MethodDecorator =>
   (target: any, propertyKey: string | symbol): void => {
     const middlewareList: RequestParamHandler[] = Reflect.hasMetadata(
@@ -13,5 +13,10 @@ export const ActionMiddleware =
       : [];
 
     middlewareList.push(middleware);
-    Reflect.defineMetadata(MetadataKeys.MIDDLEWARE, middlewareList, target, propertyKey);
-};
+    Reflect.defineMetadata(
+      MetadataKeys.MIDDLEWARE,
+      middlewareList,
+      target,
+      propertyKey
+    );
+  };

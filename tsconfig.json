@@ -17,7 +17,7 @@
     "strict": true /* Enable all strict type-checking options. */,
     "skipLibCheck": true /* Skip type checking all .d.ts files. */,
     "typeRoots": [
-      "./node_modules/@types",
-    ] /* Specify a list of folders to be used for type definition files. */,
+      "./node_modules/@types"
+    ] /* Specify a list of folders to be used for type definition files. */
   }
 }
