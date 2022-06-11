@@ -4,6 +4,7 @@ import compression from "compression";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import HomeController from "./controllers/home.controller";
 
 let app: ServerApp;
 
@@ -15,8 +16,8 @@ export const init = async () => {
       cors(),
       morgan(config.morganFormat),
     ],
-    Controllers: [],
-    Services: [],
+    controllers: [HomeController],
+    services: [],
   });
 
   app.start(config.port);
