@@ -8,7 +8,7 @@ import HomeController from "./controllers/home.controller";
 
 let app: ServerApp;
 
-export const init = async () => {
+export const init = () => {
   app = new ServerApp({
     globalMiddleware: [
       compression(),
@@ -20,9 +20,18 @@ export const init = async () => {
     services: [],
   });
 
-  app.start(config.port);
+  const { port } = config;
+  app.start(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
 };
 
-export const end = async () => {
-  app.stop();
+export const end = () => {
+  app.stop((error) => {
+    if (error) {
+      console.error(error);
+    } else {
+      console.log("Server stopped");
+    }
+  });
 };

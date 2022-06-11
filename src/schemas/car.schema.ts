@@ -10,5 +10,5 @@ export const CarSchema = {
     price: { type: "number" },
   },
   required: ["color", "model", "year", "brand", "hp", "price"],
-  additionalProperties: false
+  additionalProperties: false,
 };

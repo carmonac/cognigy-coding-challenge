@@ -19,14 +19,12 @@ export class ServerApp {
     return this._instance;
   }
 
-  public start(port: number): void {
-    this.process = this._instance.listen(port, () => {
-      console.log(`Server started on port ${port}`);
-    });
+  public start(port: number, callback?: () => void): void {
+    this.process = this._instance.listen(port, callback);
   }
 
-  public stop(): void {
-    this.process.close();
+  public stop(callback: ((err?: Error | undefined) => void) | undefined): void {
+    this.process.close(callback);
   }
 
   private registerGlobalMiddleware(middleware: Handler[] | undefined): void {
