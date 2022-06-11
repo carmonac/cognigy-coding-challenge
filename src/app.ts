@@ -99,7 +99,18 @@ export class ServerApp {
           handler: `${ControllerClass.name}.${handlerNameString}`,
         });
       });
-      this._instance.use(basePath, expressRouter); // register router
+      // get all middleware functions from controller class
+      const controllerMiddleware = Reflect.getMetadata(
+        MetadataKeys.MIDDLEWARE,
+        ControllerClass
+      );
+
+      // register router
+      if (controllerMiddleware && controllerMiddleware.length > 0) {
+        this._instance.use(basePath, ...controllerMiddleware, expressRouter);
+      } else {
+        this._instance.use(basePath, expressRouter);
+      }
     });
     console.table(infoRoutes);
   }

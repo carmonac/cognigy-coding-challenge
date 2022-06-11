@@ -6,7 +6,6 @@ describe("HomeController", () => {
     const controller = new HomeController();
     const req = getMockReq();
     const { res } = getMockRes();
-    res.send = jest.fn();
 
     controller.index(req, res);
     expect(res.send).toHaveBeenCalledWith("Hello Cognigy!");
