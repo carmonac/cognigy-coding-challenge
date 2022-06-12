@@ -6,4 +6,5 @@ export default {
   mongo: {
     uri: process.env.MONGO_URI || "mongodb://localhost:27017/cognigy",
   },
+  cache: process.env.CACHE_ENABLED || "false",
 };

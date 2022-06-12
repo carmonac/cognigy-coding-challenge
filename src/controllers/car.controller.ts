@@ -6,6 +6,7 @@ import { CarRepository } from "../services/car.repository";
 import { Middleware } from "../decorators/middleware";
 import { dataValidator } from "../middleware/validator.middleware";
 import { xApiKeyAuth } from "../middleware/xapikey.middleware";
+import { cache } from "../middleware/cache.middleware";
 import { CarDTOSchema } from "../schemas/car.schema";
 import config from "../config";
 
@@ -20,12 +21,14 @@ export default class CarController {
   }
 
   @Get("")
+  @Middleware(cache("1 minute"))
   public async getAll(req: Request, res: Response): Promise<void> {
     const cars = await this.carRepository.getAll();
     res.json(cars);
   }
 
   @Get("/:id")
+  @Middleware(cache("1 minute"))
   @Middleware(dataValidator(CarDTOSchema, ["id"]))
   public async getById(req: Request, res: Response): Promise<void> {
     const car = await this.carRepository.getById(req.params.id);
@@ -72,10 +75,7 @@ export default class CarController {
       res.status(404).send("Car not found");
       return;
     }
-    const updatedCar = await this.carRepository.update(
-      req.params.id,
-      req.body
-    );
+    const updatedCar = await this.carRepository.update(req.params.id, req.body);
     res.json(updatedCar);
   }
 }
