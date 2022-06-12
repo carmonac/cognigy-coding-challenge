@@ -22,13 +22,19 @@ export const CarDTOSchema = {
     year: { type: "number", maximum: new Date().getFullYear() },
     brand: { type: "string" },
     hp: { type: "number", minimum: 30, maximum: 500 },
-    price: { type: "number" },
+    price: { type: "number", minimum: 1000 },
   },
   required: [],
   additionalProperties: false,
   errorMessage: {
     properties: {
       id: "Invalid id",
+      color: "Invalid color",
+      model: "Invalid model",
+      year: "Year must be less than current year",
+      brand: "Invalid brand",
+      hp: "Horsepower must be between 30 and 500",
+      price: "Price must be greater than 1000",
     }
   }
 };
