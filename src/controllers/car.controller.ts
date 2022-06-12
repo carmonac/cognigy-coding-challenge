@@ -21,14 +21,14 @@ export default class CarController {
 
   @Get("")
   public async getAll(req: Request, res: Response): Promise<void> {
-    const cars = await this.carRepository.getAllCars();
+    const cars = await this.carRepository.getAll();
     res.json(cars);
   }
 
   @Get("/:id")
   @Middleware(dataValidator(CarDTOSchema, ["id"]))
   public async getById(req: Request, res: Response): Promise<void> {
-    const car = await this.carRepository.getCarById(req.params.id);
+    const car = await this.carRepository.getById(req.params.id);
     if (!car) {
       res.status(404).send("Car not found");
       return;
@@ -39,12 +39,12 @@ export default class CarController {
   @Delete("/:id")
   @Middleware(dataValidator(CarDTOSchema, ["id"]))
   public async deleteById(req: Request, res: Response): Promise<void> {
-    const car = await this.carRepository.getCarById(req.params.id);
+    const car = await this.carRepository.getById(req.params.id);
     if (!car) {
       res.status(404).send("Car not found");
       return;
     }
-    await this.carRepository.deleteCar(req.params.id);
+    await this.carRepository.deleteById(req.params.id);
     res.send({ message: "deleted car with id " + req.params.id });
   }
 
@@ -60,19 +60,19 @@ export default class CarController {
     ])
   )
   public async create(req: Request, res: Response): Promise<void> {
-    const newCar = await this.carRepository.createCar(req.body);
+    const newCar = await this.carRepository.create(req.body);
     res.send(newCar);
   }
 
   @Post("/:id")
   @Middleware(dataValidator(CarDTOSchema, ["id"]))
   public async update(req: Request, res: Response): Promise<void> {
-    const car = await this.carRepository.getCarById(req.params.id);
+    const car = await this.carRepository.getById(req.params.id);
     if (!car) {
       res.status(404).send("Car not found");
       return;
     }
-    const updatedCar = await this.carRepository.updateCar(
+    const updatedCar = await this.carRepository.update(
       req.params.id,
       req.body
     );
