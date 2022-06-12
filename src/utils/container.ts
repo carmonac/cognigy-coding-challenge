@@ -6,7 +6,6 @@ export class Container {
       return;
     }
     this.registry.set(key, instance);
-    console.log(`${key} registered`);
   }
 
   static resolve<T>(key: string): T {

@@ -3,6 +3,9 @@ import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
+import logger from "./utils/logger";
+
+const log = logger("server");
 
 export class ServerApp {
   private readonly _instance: Application;
@@ -40,7 +43,7 @@ export class ServerApp {
 
   private registerServices(services: any[] | undefined): void {
     if (!services) {
-      console.info("No services registered");
+      log.warn("No services registered");
       return;
     }
     services.forEach((ServiceClass) => {
@@ -55,7 +58,7 @@ export class ServerApp {
 
   private registerControllers(controllers: any[] | undefined): void {
     if (!controllers) {
-      console.info("No controllers registered");
+      log.warn("No controllers registered");
       return;
     }
     const infoRoutes: Array<{ method: string; path: string; handler: string }> =

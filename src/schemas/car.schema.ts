@@ -1,13 +1,14 @@
-import * as mongoose from "mongoose";
+import { Schema } from "mongoose";
 
 // Car Schema (Mongoose)
-export const CarSchema = new mongoose.Schema({
+export const CarSchema = new Schema({
   color: String,
   model: String,
   price: Number,
   year: Number,
   hp: Number,
   brand: String,
+  createAt: { type: Date, default: Date.now },
 });
 
 // car data transfer object (DTO)

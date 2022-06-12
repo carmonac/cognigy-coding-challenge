@@ -1,6 +1,6 @@
 import { Document } from "mongoose";
 
-export interface Car extends Document {
+export interface ICar extends Document {
   readonly color: string;
   readonly year: number;
   readonly model: string;
