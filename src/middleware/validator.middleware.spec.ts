@@ -20,8 +20,7 @@ describe("DataValidator", () => {
         name: { type: "string" },
         age: { type: "number" },
       },
-      required: ["name", "age"],
-    })(req, res, next);
+    }, ["name", "age"])(req, res, next);
     expect(next).toHaveBeenCalled();
   });
 
@@ -35,8 +34,7 @@ describe("DataValidator", () => {
         name: { type: "string" },
         age: { type: "number" },
       },
-      required: ["name", "age"],
-    })(req, res, next);
+    }, ["name", "age"])(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalled();
   });
@@ -51,8 +49,7 @@ describe("DataValidator", () => {
       properties: {
         year: { type: "number", maximum: currentYear },
       },
-      required: ["year"],
-    })(req, res, next);
+    }, ["year"])(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalled();
   });

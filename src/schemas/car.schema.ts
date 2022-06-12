@@ -15,7 +15,8 @@ export const CarSchema = new Schema({
 export const CarDTOSchema = {
   type: "object",
   properties: {
-    _id: { type: "string" },
+    // eslint-disable-next-line no-useless-escape
+    id: { type: "string", pattern: "^[0-9a-fA-F]{24}$" },
     color: { type: "string" },
     model: { type: "string" },
     year: { type: "number", maximum: new Date().getFullYear() },
@@ -25,4 +26,9 @@ export const CarDTOSchema = {
   },
   required: [],
   additionalProperties: false,
+  errorMessage: {
+    properties: {
+      id: "Invalid id",
+    }
+  }
 };

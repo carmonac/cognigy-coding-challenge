@@ -1,16 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import Ajv from "ajv";
+import ajvErrors from "ajv-errors";
 
 export const dataValidator =
-  (schema: any) =>
+  (schema: any, required: string[]) =>
   (req: Request, res: Response, next: NextFunction): void => {
-    const ajv = new Ajv();
+    const ajv = new Ajv({ allErrors: true });
+    ajvErrors(ajv);
+    schema.required = required;
     const validate = ajv.compile(schema);
-    const valid = validate(req.body);
+    const data = { ...req.params, ...req.body };
+    const valid = validate(data);
     if (!valid) {
       res.status(400).send(
         validate.errors?.map((e) => ({
-          property: e.propertyName,
           message: e.message,
         }))
       );
