@@ -7,6 +7,7 @@ import morgan from "morgan";
 import HomeController from "./controllers/home.controller";
 import CarController from "./controllers/car.controller";
 import logger from "./utils/logger";
+import DBConnection from "./services/db.service";
 
 const log = logger("server");
 
@@ -21,7 +22,7 @@ export const init = () => {
       morgan(config.morganFormat),
     ],
     controllers: [HomeController, CarController],
-    services: [],
+    services: [DBConnection],
   });
 
   const { port } = config;

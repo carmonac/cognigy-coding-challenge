@@ -24,6 +24,7 @@ export class ServerApp {
   }
 
   public stop(callback: ((err?: Error | undefined) => void) | undefined): void {
+    this.unregisterServices();
     this.process.close(callback);
   }
 
@@ -46,6 +47,10 @@ export class ServerApp {
       const instance = new ServiceClass();
       Container.register(ServiceClass.name, instance);
     });
+  }
+
+  private unregisterServices(): void {
+    Container.unregisterAll();
   }
 
   private registerControllers(controllers: any[] | undefined): void {

@@ -15,4 +15,13 @@ export class Container {
     }
     return this.registry.get(key);
   }
+
+  static unregisterAll(): void {
+    for (const value of this.registry.values()) {
+      if (value.finishInstance) {
+        value.finishInstance();
+      }
+    }
+    this.registry.clear();
+  }
 }
