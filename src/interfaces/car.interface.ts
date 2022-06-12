@@ -6,4 +6,5 @@ export interface ICar extends Document {
   readonly model: string;
   readonly hp: number;
   readonly price: number;
+  readonly brand: string;
 }

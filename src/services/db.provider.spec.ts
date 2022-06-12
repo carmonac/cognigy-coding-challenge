@@ -27,7 +27,7 @@ describe("DB provider", () => {
 
   afterAll(async () => {
     dbConnection.finishInstance();
-    await mongod.stop();
+    await mongod.stop({ force: true, doCleanup: true });
   });
 
 });
