@@ -14,13 +14,16 @@ describe("DataValidator", () => {
       name: "John Doe",
       age: 30,
     };
-    dataValidator({
-      type: "object",
-      properties: {
-        name: { type: "string" },
-        age: { type: "number" },
+    dataValidator(
+      {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          age: { type: "number" },
+        },
       },
-    }, ["name", "age"])(req, res, next);
+      ["name", "age"]
+    )(req, res, next);
     expect(next).toHaveBeenCalled();
   });
 
@@ -28,13 +31,16 @@ describe("DataValidator", () => {
     req.body = {
       year: "2022",
     };
-    dataValidator({
-      type: "object",
-      properties: {
-        name: { type: "string" },
-        age: { type: "number" },
+    dataValidator(
+      {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          age: { type: "number" },
+        },
       },
-    }, ["name", "age"])(req, res, next);
+      ["name", "age"]
+    )(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalled();
   });
@@ -44,12 +50,15 @@ describe("DataValidator", () => {
     req.body = {
       year: 2023,
     };
-    dataValidator({
-      type: "object",
-      properties: {
-        year: { type: "number", maximum: currentYear },
+    dataValidator(
+      {
+        type: "object",
+        properties: {
+          year: { type: "number", maximum: currentYear },
+        },
       },
-    }, ["year"])(req, res, next);
+      ["year"]
+    )(req, res, next);
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.send).toHaveBeenCalled();
   });

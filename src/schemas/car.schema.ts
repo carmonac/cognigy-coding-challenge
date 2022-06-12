@@ -35,6 +35,6 @@ export const CarDTOSchema = {
       brand: "Invalid brand",
       hp: "Horsepower must be between 30 and 500",
       price: "Price must be greater than 1000",
-    }
-  }
+    },
+  },
 };
