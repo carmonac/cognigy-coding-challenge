@@ -14,8 +14,8 @@ export class ServerApp {
   constructor(options: ServerOptions) {
     this._instance = express();
     this.registerGlobalMiddleware(options.globalMiddleware);
-    this.registerControllers(options.controllers);
     this.registerServices(options.services);
+    this.registerControllers(options.controllers);
   }
 
   get instance(): Application {
@@ -102,7 +102,7 @@ export class ServerApp {
         infoRoutes.push({
           method,
           path: `${basePath}${path}`,
-          handler: `${ControllerClass.name}.${handlerNameString}`,
+          handler: handlerNameString,
         });
       });
       // get all middleware functions from controller class
