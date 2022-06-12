@@ -1,6 +1,6 @@
 import express, { Application, Handler, Router } from "express";
 import { Server } from "http";
-import { ServerOptions } from "./interfaces/serveroptions";
+import { ServerOptions } from "./interfaces/serveroptions.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
 

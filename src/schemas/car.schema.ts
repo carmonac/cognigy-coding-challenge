@@ -1,4 +1,17 @@
-export const CarSchema = {
+import * as mongoose from "mongoose";
+
+// Car Schema (Mongoose)
+export const CarSchema = new mongoose.Schema({
+  color: String,
+  model: String,
+  price: Number,
+  year: Number,
+  hp: Number,
+  brand: String,
+});
+
+// car data transfer object (DTO)
+export const CarDTOSchema = {
   type: "object",
   properties: {
     _id: { type: "string" },
@@ -9,6 +22,6 @@ export const CarSchema = {
     hp: { type: "number", minimum: 30, maximum: 500 },
     price: { type: "number" },
   },
-  required: ["color", "model", "year", "brand", "hp", "price"],
+  required: [],
   additionalProperties: false,
 };
