@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import Ajv from "ajv";
 
-export const DataValidator =
+export const dataValidator =
   (schema: any) =>
   (req: Request, res: Response, next: NextFunction): void => {
     const ajv = new Ajv();

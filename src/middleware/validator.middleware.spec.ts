@@ -1,4 +1,4 @@
-import { DataValidator } from "./validator.middleware";
+import { dataValidator } from "./validator.middleware";
 import { getMockReq, getMockRes } from "@jest-mock/express";
 
 describe("DataValidator", () => {
@@ -14,7 +14,7 @@ describe("DataValidator", () => {
       name: "John Doe",
       age: 30,
     };
-    DataValidator({
+    dataValidator({
       type: "object",
       properties: {
         name: { type: "string" },
@@ -29,7 +29,7 @@ describe("DataValidator", () => {
     req.body = {
       year: "2022",
     };
-    DataValidator({
+    dataValidator({
       type: "object",
       properties: {
         name: { type: "string" },
@@ -46,7 +46,7 @@ describe("DataValidator", () => {
     req.body = {
       year: 2023,
     };
-    DataValidator({
+    dataValidator({
       type: "object",
       properties: {
         year: { type: "number", maximum: currentYear },

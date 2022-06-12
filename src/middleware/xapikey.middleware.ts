@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-export const XApiKeyAuth =
+export const xApiKeyAuth =
   (apiKey: string) =>
   (req: Request, res: Response, next: NextFunction): void => {
     if ("x-api-key" in req.headers && req.headers["x-api-key"] === apiKey) {

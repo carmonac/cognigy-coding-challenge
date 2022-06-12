@@ -1,4 +1,4 @@
-import { XApiKeyAuth } from "./xapikey.middleware";
+import { xApiKeyAuth } from "./xapikey.middleware";
 import { getMockReq, getMockRes } from "@jest-mock/express";
 
 describe("XApiKeyMiddleware", () => {
@@ -11,13 +11,13 @@ describe("XApiKeyMiddleware", () => {
 
   it("should allow to continue", () => {
     req.headers["x-api-key"] = "testApiKey";
-    XApiKeyAuth("testApiKey")(req, res, next);
+    xApiKeyAuth("testApiKey")(req, res, next);
     expect(next).toHaveBeenCalled();
   });
 
   it("should send unauthorized response", () => {
     req.headers["x-api-key"] = "wrong";
-    XApiKeyAuth("testApiKey")(req, res, next);
+    xApiKeyAuth("testApiKey")(req, res, next);
     expect(res.status).toHaveBeenCalledWith(401);
     expect(res.send).toHaveBeenCalledWith("Unauthorized");
   });
