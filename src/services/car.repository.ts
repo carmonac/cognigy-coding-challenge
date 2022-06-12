@@ -23,8 +23,14 @@ export class CarRepository {
   }
 
   public async updateCar(id: string, car: ICar): Promise<ICar | null> {
-    const updatedCar = await this.Car!.findByIdAndUpdate(id, car, { new: true });
+    const updatedCar = await this.Car!.findByIdAndUpdate(id, car, {
+      new: true,
+    });
     return updatedCar;
+  }
+
+  public async deleteCar(id: string): Promise<void> {
+    await this.Car!.findByIdAndDelete(id);
   }
 
   constructor() {
