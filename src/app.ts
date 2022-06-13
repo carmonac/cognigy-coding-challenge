@@ -1,10 +1,18 @@
-import express, { Application, Handler, Router } from "express";
+import express, {
+  Application,
+  Handler,
+  NextFunction,
+  Router,
+  Request,
+  Response,
+} from "express";
 import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
 import { errorHandler } from "./middleware/error.middleware";
 import logger from "./utils/logger";
+import { NotFoundError } from "./utils/errors";
 
 const log = logger("server");
 
@@ -14,9 +22,14 @@ export class ServerApp {
 
   constructor(options: ServerOptions) {
     this._instance = express();
+    // register global middleware
     this.registerGlobalMiddleware(options.globalMiddleware);
+    // register services
     this.registerServices(options.services);
+    // register controllers
     this.registerControllers(options.controllers);
+    // register error handler
+    this._instance.use(this.notFound);
     this._instance.use(errorHandler);
   }
 
@@ -132,4 +145,12 @@ export class ServerApp {
     );
     return { basePath, routers };
   }
+
+  private notFound: Handler = (
+    _req: Request,
+    _res: Response,
+    next: NextFunction
+  ) => {
+    next(new NotFoundError("Not found"));
+  };
 }
