@@ -94,7 +94,7 @@ export default class CarController {
   ): Promise<void> {
     try {
       const newCar = await this.carRepository.create(req.body);
-      res.send(newCar);
+      res.status(201).json(newCar);
     } catch (error) {
       next(error);
     }
