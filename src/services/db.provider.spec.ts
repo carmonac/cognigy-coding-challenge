@@ -1,6 +1,7 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { DBConnection } from "./db.provider";
 import mongoose from "mongoose";
+import config from "../config";
 
 mongoose.connection.on = jest.fn();
 
@@ -10,12 +11,7 @@ describe("DB provider", () => {
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
     const mongoUri = await mongod.getUri();
-
-    jest.mock("../config", () => ({
-      mongo: {
-        uri: mongoUri,
-      },
-    }));
+    config.mongo.uri = mongoUri;
     dbConnection = new DBConnection();
   });
 
