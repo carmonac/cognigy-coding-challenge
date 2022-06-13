@@ -35,7 +35,21 @@ jobs:
         
       - name: build
         run: npm run build
-        
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:     
+
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          check-lastest: true
+
+      - name: Install deps
+        run: npm install
+
       - name: test
-        run: npm run test
+        run: npm run test:unit
 
