@@ -112,7 +112,6 @@ export class ServerApp {
       } else {
         this._instance.use(basePath, expressRouter);
       }
-      console.log("RUTAS REGISTRADAS");
     });
     console.table(infoRoutes);
   }
