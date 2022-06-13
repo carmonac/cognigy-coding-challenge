@@ -15,10 +15,10 @@ export class Container {
     return this.registry.get(key);
   }
 
-  static unregisterAll(): void {
+  static async unregisterAll(): Promise<void> {
     for (const value of this.registry.values()) {
       if (value.finishInstance) {
-        value.finishInstance();
+        await value.finishInstance();
       }
     }
     this.registry.clear();

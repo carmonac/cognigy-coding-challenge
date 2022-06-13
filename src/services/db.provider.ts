@@ -18,8 +18,8 @@ export class DBConnection {
     });
   }
 
-  public finishInstance(): void {
+  public async finishInstance(): Promise<void> {
     log.info("Mongoose disconnecting");
-    mongoose.disconnect();
+    await mongoose.disconnect();
   }
 }

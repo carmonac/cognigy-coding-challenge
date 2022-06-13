@@ -15,15 +15,17 @@ describe("DB provider", () => {
     dbConnection = new DBConnection();
   });
 
+  afterAll(async () => {
+    await mongoose.connection.dropDatabase();
+    await mongoose.connection.close();
+    await dbConnection.finishInstance();
+    await mongod.stop({ force: true, doCleanup: true });
+  });
+
   it("should connect to mongo", () => {
     expect(mongoose.connection.on).toHaveBeenCalledWith(
       "connected",
       expect.any(Function)
     );
-  });
-
-  afterAll(async () => {
-    dbConnection.finishInstance();
-    await mongod.stop({ force: true, doCleanup: true });
   });
 });

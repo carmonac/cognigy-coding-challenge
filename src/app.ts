@@ -68,7 +68,9 @@ export class ServerApp {
   }
 
   private unregisterServices(): void {
-    Container.unregisterAll();
+    Container.unregisterAll().then(() => {
+      log.info("Services unregistered");
+    });
   }
 
   private registerControllers(controllers: any[] | undefined): void {
