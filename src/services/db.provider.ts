@@ -6,6 +6,7 @@ const log = logger("db");
 
 export class DBConnection {
   constructor() {
+    console.log(config.mongo.uri);
     mongoose.connect(config.mongo.uri);
     mongoose.connection.on("connected", () => {
       log.info("Mongoose connected");

@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { ServerApp } from "./app";
 import config from "./config";
 import compression from "compression";
@@ -14,7 +15,7 @@ const log = logger("server");
 
 let app: ServerApp;
 
-export const init = () => {
+export const init = (): ServerApp => {
   app = new ServerApp({
     globalMiddleware: [
       compression(),
@@ -30,6 +31,7 @@ export const init = () => {
   app.start(port, () => {
     log.info(`Server started on port ${port}`);
   });
+  return app;
 };
 
 export const end = () => {
