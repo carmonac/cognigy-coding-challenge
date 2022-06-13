@@ -53,3 +53,6 @@ jobs:
       - name: test
         run: npm run test:unit
 
+      - name: integration
+        run: npm run test:integration
+
