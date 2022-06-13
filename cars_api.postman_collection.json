@@ -1,0 +1,169 @@
+{
+  "info": {
+    "_postman_id": "758fb672-3d9d-414c-8a47-413679df2b28",
+    "name": "Cognigy-Challenge",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "1777918"
+  },
+  "item": [
+    {
+      "name": "Hello Cognigy",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get all cars",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/cars",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["cars"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create car",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"model\": \"CLA\",\n    \"brand\": \"Mercedes\",\n    \"year\": 2014,\n    \"color\": \"black\",\n    \"hp\": 211,\n    \"price\": 25500\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/cars",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["cars"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update car",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"color\": \"black and red\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/cars/62a627782645a6516535183b",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["cars", "62a627782645a6516535183b"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete car",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/cars/62a627782645a6516535183b",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["cars", "62a627782645a6516535183b"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Healthcheck",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/healthcheck",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["healthcheck"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get car",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "cognigy.ai_123",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/cars/62a6312065b15aaf0e949035",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["cars", "62a6312065b15aaf0e949035"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
