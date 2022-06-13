@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { UnauthorizedError } from "../utils/errors";
 
 export const xApiKeyAuth =
   (apiKey: string) =>
@@ -6,6 +7,6 @@ export const xApiKeyAuth =
     if ("x-api-key" in req.headers && req.headers["x-api-key"] === apiKey) {
       next();
     } else {
-      res.status(401).send("Unauthorized");
+      next(new UnauthorizedError("Invalid API key"));
     }
   };

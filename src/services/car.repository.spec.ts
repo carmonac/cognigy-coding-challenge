@@ -1,13 +1,13 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import { CarRepository } from './car.repository';
-import mongoose from 'mongoose';
-import { ICar } from '../interfaces/car.interface';
-import { CarSchema } from '../schemas/car.schema';
+import { MongoMemoryServer } from "mongodb-memory-server";
+import { CarRepository } from "./car.repository";
+import mongoose from "mongoose";
+import { ICar } from "../interfaces/car.interface";
+import { CarSchema } from "../schemas/car.schema";
 
 describe("Car repository", () => {
   let mongod: MongoMemoryServer;
   let carRepository: CarRepository;
-  const Car = mongoose.model<ICar>('Car', CarSchema);
+  const Car = mongoose.model<ICar>("Car", CarSchema);
 
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
@@ -15,7 +15,6 @@ describe("Car repository", () => {
 
     mongoose.connect(mongoUri);
     carRepository = new CarRepository();
-
   });
 
   it("should create a new car", async () => {

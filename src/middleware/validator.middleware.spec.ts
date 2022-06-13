@@ -1,5 +1,6 @@
 import { dataValidator } from "./validator.middleware";
 import { getMockReq, getMockRes } from "@jest-mock/express";
+import { BadRequestError } from "../utils/errors";
 
 describe("DataValidator", () => {
   const req = getMockReq();
@@ -41,8 +42,7 @@ describe("DataValidator", () => {
       },
       ["name", "age"]
     )(req, res, next);
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.send).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(expect.any(BadRequestError));
   });
 
   it("should send error because year is greater than current year", () => {
@@ -59,7 +59,6 @@ describe("DataValidator", () => {
       },
       ["year"]
     )(req, res, next);
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.send).toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith(expect.any(BadRequestError));
   });
 });

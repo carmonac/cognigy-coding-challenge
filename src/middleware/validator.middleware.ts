@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import { BadRequestError } from "../utils/errors";
 import Ajv from "ajv";
 import ajvErrors from "ajv-errors";
 
 export const dataValidator =
   (schema: any, required: string[]) =>
-  (req: Request, res: Response, next: NextFunction): void => {
+  (req: Request, _res: Response, next: NextFunction): void => {
     const ajv = new Ajv({ allErrors: true });
     ajvErrors(ajv);
     schema.required = required;
@@ -12,11 +13,9 @@ export const dataValidator =
     const data = { ...req.params, ...req.body };
     const valid = validate(data);
     if (!valid) {
-      res.status(400).send(
-        validate.errors?.map((e) => ({
-          message: e.message,
-        }))
-      );
+      const errorMessage =
+        validate.errors?.map((error) => error.message).join(", ") || "";
+      next(new BadRequestError(errorMessage));
     } else {
       next();
     }

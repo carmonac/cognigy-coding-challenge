@@ -1,8 +1,13 @@
-import express, { Application, Handler, Router } from "express";
+import express, {
+  Application,
+  Handler,
+  Router,
+} from "express";
 import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
+import { errorHandler } from "./middleware/error.middleware";
 import logger from "./utils/logger";
 
 const log = logger("server");
@@ -16,6 +21,7 @@ export class ServerApp {
     this.registerGlobalMiddleware(options.globalMiddleware);
     this.registerServices(options.services);
     this.registerControllers(options.controllers);
+    this._instance.use(errorHandler);
   }
 
   get instance(): Application {
@@ -64,18 +70,13 @@ export class ServerApp {
     const infoRoutes: Array<{ method: string; path: string; handler: string }> =
       [];
     controllers.forEach((ControllerClass) => {
+
       const controllerInstance: { [handleName: string]: Handler } =
         new ControllerClass() as any;
-      // get base path from controller class
-      const basePath: string = Reflect.getMetadata(
-        MetadataKeys.ROUTE_PATH,
+      const { basePath, routers } = this.extractMetadataFromController(
         ControllerClass
       );
-      // get all router data from controller class
-      const routers: RouterData[] = Reflect.getMetadata(
-        MetadataKeys.ROUTERS,
-        ControllerClass
-      );
+
       // register all routers
       const expressRouter: Router = express.Router();
       routers.forEach(({ method, path, handlerName }) => {
@@ -117,7 +118,25 @@ export class ServerApp {
       } else {
         this._instance.use(basePath, expressRouter);
       }
+      console.log("RUTAS REGISTRADAS");
     });
     console.table(infoRoutes);
+  }
+
+  private extractMetadataFromController(ControllerClass: any): {
+    basePath: string;
+    routers: RouterData[];
+  } {
+    // get base path from controller class
+    const basePath: string = Reflect.getMetadata(
+      MetadataKeys.ROUTE_PATH,
+      ControllerClass
+    );
+    // get all router data from controller class
+    const routers: RouterData[] = Reflect.getMetadata(
+      MetadataKeys.ROUTERS,
+      ControllerClass
+    );
+    return { basePath, routers };
   }
 }
