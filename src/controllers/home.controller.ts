@@ -2,10 +2,15 @@ import { Request, Response } from "express";
 import Controller from "../decorators/controller";
 import { Get } from "../decorators/method";
 
-@Controller("/")
+@Controller("")
 export default class HomeController {
   @Get("")
   public index(req: Request, res: Response): void {
     res.send("Hello Cognigy!");
+  }
+
+  @Get("/healthcheck")
+  public healthcheck(req: Request, res: Response): void {
+    res.send("OK");
   }
 }

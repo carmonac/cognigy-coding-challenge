@@ -10,4 +10,13 @@ describe("HomeController", () => {
     controller.index(req, res);
     expect(res.send).toHaveBeenCalledWith("Hello Cognigy!");
   });
+
+  it("should return 'OK'", () => {
+    const controller = new HomeController();
+    const req = getMockReq();
+    const { res } = getMockRes();
+
+    controller.healthcheck(req, res);
+    expect(res.send).toHaveBeenCalledWith("OK");
+  });
 });

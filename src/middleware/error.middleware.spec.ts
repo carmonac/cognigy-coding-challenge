@@ -1,12 +1,12 @@
-import { 
+import {
   BadRequestError,
   UnauthorizedError,
   ForbiddenError,
   NotFoundError,
   InternalServerError,
-} from '../utils/errors';
+} from "../utils/errors";
 import { getMockReq, getMockRes } from "@jest-mock/express";
-import { errorHandler } from './error.middleware';
+import { errorHandler } from "./error.middleware";
 
 describe("ErrorHandler", () => {
   const req = getMockReq();
@@ -46,5 +46,4 @@ describe("ErrorHandler", () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ message: "Internal server error" });
   });
-
 });

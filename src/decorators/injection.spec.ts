@@ -13,7 +13,7 @@ Container.register("TestRepository", new TestRepository());
 
 describe("Injection", () => {
   it("should inject a dependency in the class", () => {
-    @Injectable
+    @Injectable()
     class TestController {
       testRepository: TestRepository;
 

@@ -1,8 +1,4 @@
-import express, {
-  Application,
-  Handler,
-  Router,
-} from "express";
+import express, { Application, Handler, Router } from "express";
 import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
@@ -70,12 +66,10 @@ export class ServerApp {
     const infoRoutes: Array<{ method: string; path: string; handler: string }> =
       [];
     controllers.forEach((ControllerClass) => {
-
       const controllerInstance: { [handleName: string]: Handler } =
         new ControllerClass() as any;
-      const { basePath, routers } = this.extractMetadataFromController(
-        ControllerClass
-      );
+      const { basePath, routers } =
+        this.extractMetadataFromController(ControllerClass);
 
       // register all routers
       const expressRouter: Router = express.Router();
