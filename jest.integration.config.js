@@ -4,7 +4,7 @@ module.exports = {
   coverageDirectory: "<rootDir>/coverage",
   testEnvironment: "node",
   testMatch: ["**/?(*.)(test|spec).ts"],
-  coveragePathIgnorePatterns: ["index.ts"],
+  coveragePathIgnorePatterns: ["index.ts", "container.ts", "errors.ts"],
   transform: { "^.+\\.(ts)?$": "ts-jest" },
   modulePathIgnorePatterns: ["<rootDir>/dist/"],
 };

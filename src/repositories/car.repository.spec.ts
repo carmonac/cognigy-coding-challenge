@@ -32,24 +32,24 @@ describe("Car repository", () => {
   });
 
   it("should get all cars", async () => {
-    const cars = await carRepository.getAll();
+    const cars = await carRepository.getAll({ model: 1 });
     expect(cars.length).toBeGreaterThan(0);
   });
 
   it("should get a car by id", async () => {
-    const cars = await carRepository.getAll();
-    const car = await carRepository.getById(cars[0]._id);
+    const cars = await carRepository.getAll({ _id: 1, model: 1 });
+    const car = await carRepository.getById(cars[0]?._id);
     expect(car).toBeDefined();
   });
 
   it("should delete a car by id", async () => {
-    const cars = await carRepository.getAll();
-    const car = await carRepository.getById(cars[0]._id);
+    const cars = await carRepository.getAll({ _id: 1, model: 1 });
+    const car = await carRepository.getById(cars[0]?._id);
     if (!car) {
       throw new Error("Car not found");
     }
-    await carRepository.deleteById(cars[0]._id);
-    const deletedCar = await carRepository.getById(cars[0]._id);
+    await carRepository.deleteById(cars[0]?._id);
+    const deletedCar = await carRepository.getById(cars[0]?._id);
     expect(deletedCar).toBe(null);
   });
 

@@ -95,12 +95,7 @@ describe("Integration tests", () => {
         brand: "Ford",
         model: "Mustang",
         year: 1969,
-        color: "red",
-        price: 100000,
-        hp: 200,
         _id: expect.any(String),
-        createAt: expect.any(String),
-        __v: 0,
       },
     ]);
   });

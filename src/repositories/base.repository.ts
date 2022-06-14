@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 export default class BaseRepository<T extends mongoose.Document> {
   private Entity?: mongoose.Model<T>;
 
-  public async getAll(): Promise<T[]> {
-    return this.Entity!.find();
+  public async getAll(props: Record<string, number>): Promise<Partial<T[]>> {
+    return this.Entity!.aggregate([{ $project: props }]);
   }
 
   public async getById(id: string): Promise<T | null> {

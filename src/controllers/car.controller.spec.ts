@@ -1,6 +1,5 @@
-import { CarRepository } from "../services/car.repository";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Injectable, Inject } from "../decorators/injection";
+import { CarRepository } from "../repositories/car.repository";
+import { CarService } from "../services/car.service";
 import mongoose from "mongoose";
 import CarController from "./car.controller";
 import { getMockReq, getMockRes } from "@jest-mock/express";
@@ -9,7 +8,6 @@ import { CarSchema } from "../schemas/car.schema";
 
 jest.mock("../decorators/injection", () => ({
   Injectable: jest.fn(() => jest.fn()),
-  Inject: jest.fn(() => jest.fn()),
 }));
 
 describe("CarController", () => {
@@ -18,10 +16,12 @@ describe("CarController", () => {
   const Car = mongoose.model<ICar>("Car", CarSchema);
   let carController: CarController;
   let carRepository: CarRepository;
+  let carService: CarService;
 
   beforeEach(() => {
     carRepository = new CarRepository();
-    carController = new CarController(carRepository);
+    carService = new CarService(carRepository);
+    carController = new CarController(carService);
   });
 
   it("should get all cars", async () => {

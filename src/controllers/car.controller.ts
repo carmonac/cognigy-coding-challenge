@@ -1,24 +1,23 @@
 import { NextFunction, Request, Response } from "express";
 import Controller from "../decorators/controller";
 import { Delete, Get, Post } from "../decorators/method";
-import { Injectable, Inject } from "../decorators/injection";
-import { CarRepository } from "../services/car.repository";
+import { Injectable } from "../decorators/injection";
+import { CarService } from "../services/car.service";
 import { Middleware } from "../decorators/middleware";
 import { dataValidator } from "../middleware/validator.middleware";
 import { xApiKeyAuth } from "../middleware/xapikey.middleware";
 import { cache } from "../middleware/cache.middleware";
 import { CarDTOSchema } from "../schemas/car.schema";
-import { NotFoundError } from "../utils/errors";
 import config from "../config";
 
 @Controller("/cars")
 @Middleware(xApiKeyAuth(config.apiKey))
 @Injectable()
 export default class CarController {
-  private carRepository: CarRepository;
+  private carService: CarService;
 
-  constructor(@Inject("CarRepository") carRepository?: CarRepository) {
-    this.carRepository = carRepository!;
+  constructor(carService: CarService) {
+    this.carService = carService;
   }
 
   @Get("")
@@ -29,7 +28,7 @@ export default class CarController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const cars = await this.carRepository.getAll();
+      const cars = await this.carService.getCars();
       res.json(cars);
     } catch (error) {
       next(error);
@@ -45,11 +44,7 @@ export default class CarController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const car = await this.carRepository.getById(req.params.id);
-      if (!car) {
-        next(new NotFoundError("Car not found"));
-        return;
-      }
+      const car = await this.carService.getCarById(req.params.id);
       res.json(car);
     } catch (error) {
       next(error);
@@ -64,12 +59,7 @@ export default class CarController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const car = await this.carRepository.getById(req.params.id);
-      if (!car) {
-        next(new NotFoundError("Car not found"));
-        return;
-      }
-      await this.carRepository.deleteById(req.params.id);
+      await this.carService.deleteCarById(req.params.id);
       res.json({ message: "deleted car with id " + req.params.id });
     } catch (error) {
       next(error);
@@ -93,7 +83,7 @@ export default class CarController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const newCar = await this.carRepository.create(req.body);
+      const newCar = await this.carService.createCar(req.body);
       res.status(201).json(newCar);
     } catch (error) {
       next(error);
@@ -108,11 +98,7 @@ export default class CarController {
     next: NextFunction
   ): Promise<void> {
     try {
-      const car = await this.carRepository.getById(req.params.id);
-      if (!car) {
-        next(new NotFoundError("Car not found"));
-      }
-      const updatedCar = await this.carRepository.update(
+      const updatedCar = await this.carService.updateCarById(
         req.params.id,
         req.body
       );

@@ -8,14 +8,17 @@ import morgan from "morgan";
 import HomeController from "./controllers/home.controller";
 import CarController from "./controllers/car.controller";
 import logger from "./utils/logger";
-import { DBConnection } from "./services/db.provider";
-import { CarRepository } from "./services/car.repository";
+import { DBConnection } from "./db.connection";
+import { CarRepository } from "./repositories/car.repository";
+import { CarService } from "./services/car.service";
 
 const log = logger("server");
 
 let app: ServerApp;
 
 export const init = (): ServerApp => {
+  DBConnection.connect();
+
   app = new ServerApp({
     globalMiddleware: [
       compression(),
@@ -24,7 +27,7 @@ export const init = (): ServerApp => {
       morgan(config.morganFormat),
     ],
     controllers: [HomeController, CarController],
-    services: [DBConnection, CarRepository],
+    providers: [CarRepository, CarService],
   });
 
   const { port } = config;
@@ -34,7 +37,8 @@ export const init = (): ServerApp => {
   return app;
 };
 
-export const end = () => {
+export const end = async () => {
+  await DBConnection.disconnect();
   app.stop((error) => {
     if (error) {
       log.error(error);

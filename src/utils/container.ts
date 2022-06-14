@@ -15,12 +15,7 @@ export class Container {
     return this.registry.get(key);
   }
 
-  static async unregisterAll(): Promise<void> {
-    for (const value of this.registry.values()) {
-      if (value.finishInstance) {
-        await value.finishInstance();
-      }
-    }
+  static unregisterAll(): void {
     this.registry.clear();
   }
 }

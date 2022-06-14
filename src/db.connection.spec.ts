@@ -1,24 +1,23 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { DBConnection } from "./db.provider";
+import { DBConnection } from "./db.connection";
 import mongoose from "mongoose";
-import config from "../config";
+import config from "./config";
 
 mongoose.connection.on = jest.fn();
 
 describe("DB provider", () => {
   let mongod: MongoMemoryServer;
-  let dbConnection: DBConnection;
   beforeAll(async () => {
     mongod = await MongoMemoryServer.create();
     const mongoUri = await mongod.getUri();
     config.mongo.uri = mongoUri;
-    dbConnection = new DBConnection();
+    DBConnection.connect();
   });
 
   afterAll(async () => {
     await mongoose.connection.dropDatabase();
     await mongoose.connection.close();
-    await dbConnection.finishInstance();
+    await DBConnection.disconnect();
     await mongod.stop({ force: true, doCleanup: true });
   });
 

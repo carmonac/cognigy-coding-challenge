@@ -8,26 +8,27 @@ import express, {
 } from "express";
 import { Server } from "http";
 import { ServerOptions } from "./interfaces/serveroptions.interface";
+import { Injection } from "./interfaces/injection.interface";
 import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
 import { errorHandler } from "./middleware/error.middleware";
-import logger from "./utils/logger";
 import { NotFoundError } from "./utils/errors";
-
-const log = logger("server");
-
 export class ServerApp {
   private readonly _instance: Application;
   private process!: Server;
 
   constructor(options: ServerOptions) {
     this._instance = express();
+    // default middleware
+    this._instance.use(express.json());
+    this._instance.use(express.urlencoded({ extended: true }));
     // register global middleware
-    this.registerGlobalMiddleware(options.globalMiddleware);
+    options.globalMiddleware &&
+      this.registerGlobalMiddleware(options.globalMiddleware);
     // register services
-    this.registerServices(options.services);
+    options.providers && this.registerProviders(options.providers);
     // register controllers
-    this.registerControllers(options.controllers);
+    options.controllers && this.registerControllers(options.controllers);
     // register error handler
     this._instance.use(this.notFound);
     this._instance.use(errorHandler);
@@ -42,49 +43,38 @@ export class ServerApp {
   }
 
   public stop(callback: ((err?: Error | undefined) => void) | undefined): void {
-    this.unregisterServices();
+    this.unregisterProviders();
     this.process.close(callback);
   }
 
-  private registerGlobalMiddleware(middleware: Handler[] | undefined): void {
-    // default middleware
-    this._instance.use(express.json());
-    this._instance.use(express.urlencoded({ extended: true }));
-    // global middleware
-    if (middleware) {
-      middleware.forEach((m) => this._instance.use(m));
-    }
-  }
+  private registerGlobalMiddleware = (middleware: Handler[]): void =>
+    middleware.forEach((m) => this._instance.use(m));
 
-  private registerServices(services: any[] | undefined): void {
-    if (!services) {
-      log.warn("No services registered");
-      return;
-    }
-    services.forEach((ServiceClass) => {
-      const instance = new ServiceClass();
-      Container.register(ServiceClass.name, instance);
+  private registerProviders(providers: any[]): void {
+    providers.forEach((ProviderClass) => {
+      const instance = this.createClassInstance(ProviderClass);
+      Container.register(ProviderClass.name, instance);
     });
   }
 
-  private unregisterServices(): void {
-    Container.unregisterAll().then(() => {
-      log.info("Services unregistered");
-    });
+  private unregisterProviders(): void {
+    Container.unregisterAll();
   }
 
-  private registerControllers(controllers: any[] | undefined): void {
-    if (!controllers) {
-      log.warn("No controllers registered");
-      return;
-    }
+  private registerControllers(controllers: any[]): void {
     const infoRoutes: Array<{ method: string; path: string; handler: string }> =
       [];
     controllers.forEach((ControllerClass) => {
-      const controllerInstance: { [handleName: string]: Handler } =
-        new ControllerClass() as any;
-      const { basePath, routers } =
-        this.extractMetadataFromController(ControllerClass);
+      const controllerInstance = this.createClassInstance(ControllerClass);
+
+      const basePath: string = this.extractMetadataFromController(
+        MetadataKeys.ROUTE_PATH,
+        ControllerClass
+      );
+      const routers: RouterData[] = this.extractMetadataFromController(
+        MetadataKeys.ROUTERS,
+        ControllerClass
+      );
 
       // register all routers
       const expressRouter: Router = express.Router();
@@ -96,57 +86,38 @@ export class ServerApp {
           handlerName
         );
 
-        const handlerNameString = String(handlerName);
-        if (middleware?.length > 0) {
-          expressRouter[method](
-            path,
-            ...middleware,
-            controllerInstance[handlerNameString].bind(controllerInstance)
-          );
-        } else {
-          expressRouter[method](
-            path,
-            controllerInstance[handlerNameString].bind(controllerInstance)
-          );
-        }
+        expressRouter[method](
+          path,
+          ...(middleware?.length > 0 ? middleware : []),
+          controllerInstance[String(handlerName)].bind(controllerInstance)
+        );
+
         infoRoutes.push({
           method,
           path: `${basePath}${path}`,
-          handler: handlerNameString,
+          handler: `${ControllerClass.name}.${String(handlerName)}`,
         });
       });
+
       // get all middleware functions from controller class
-      const controllerMiddleware = Reflect.getMetadata(
+      const controllerMiddleware = this.extractMetadataFromController(
         MetadataKeys.MIDDLEWARE,
         ControllerClass
       );
 
-      // register router
-      if (controllerMiddleware?.length > 0) {
-        this._instance.use(basePath, ...controllerMiddleware, expressRouter);
-      } else {
-        this._instance.use(basePath, expressRouter);
-      }
+      this._instance.use(
+        basePath,
+        ...(controllerMiddleware?.length > 0 ? controllerMiddleware : []),
+        expressRouter
+      );
     });
     console.table(infoRoutes);
   }
 
-  private extractMetadataFromController(ControllerClass: any): {
-    basePath: string;
-    routers: RouterData[];
-  } {
-    // get base path from controller class
-    const basePath: string = Reflect.getMetadata(
-      MetadataKeys.ROUTE_PATH,
-      ControllerClass
-    );
-    // get all router data from controller class
-    const routers: RouterData[] = Reflect.getMetadata(
-      MetadataKeys.ROUTERS,
-      ControllerClass
-    );
-    return { basePath, routers };
-  }
+  private extractMetadataFromController = (
+    key: string,
+    ControllerClass: any
+  ): any => Reflect.getMetadata(key, ControllerClass);
 
   private notFound: Handler = (
     _req: Request,
@@ -155,4 +126,19 @@ export class ServerApp {
   ) => {
     next(new NotFoundError("Not found"));
   };
+
+  private createClassInstance(Class: any): any {
+    const injections: Injection[] = this.extractMetadataFromController(
+      MetadataKeys.INJECTIONS,
+      Class
+    );
+
+    return injections
+      ? new Class(
+          ...injections.map((injection: Injection) =>
+            Container.resolve(injection.key)
+          )
+        )
+      : new Class();
+  }
 }

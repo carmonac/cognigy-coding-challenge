@@ -1,36 +1,32 @@
-import { Injectable, Inject } from "./injection";
-import { Container } from "../utils/container";
+import { Injectable } from "./injection";
+import { Injection } from "../interfaces/injection.interface";
 
 type TestItem = { id: number; name: string };
-
-class TestRepository {
+class TestService {
   getAll(): TestItem[] {
     return [{ id: 1, name: "test" }];
   }
 }
 
-Container.register("TestRepository", new TestRepository());
-
 describe("Injection", () => {
   it("should inject a dependency in the class", () => {
     @Injectable()
     class TestController {
-      testRepository: TestRepository;
+      testService: TestService;
 
-      constructor(@Inject("TestRepository") testRepository?: TestRepository) {
-        if (!testRepository) {
-          throw new Error("testRepository is not defined");
-        }
-
-        this.testRepository = testRepository;
+      constructor(testService: TestService) {
+        this.testService = testService;
       }
 
       getAllItems(): TestItem[] {
-        return this.testRepository.getAll();
+        return this.testService.getAll();
       }
     }
 
-    const testController = new TestController();
-    expect(testController.getAllItems()).toEqual([{ id: 1, name: "test" }]);
+    const injections: Injection[] = Reflect.getMetadata(
+      "injections",
+      TestController
+    );
+    expect(injections[0].key).toBe("TestService");
   });
 });
