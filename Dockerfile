@@ -22,5 +22,6 @@ EXPOSE 3000
 
 COPY --from=build-env /app/dist/src .
 COPY --from=build-env /app/node_modules ./node_modules
+COPY --from=build-env /app/swagger-cars.yml ./swagger-cars.yml
 
 CMD [ "dumb-init", "node", "index.js" ]
