@@ -1,0 +1,210 @@
+openapi: 3.0.0
+info:
+  title: "Cars API"
+  version: 1.0.0
+  description: Task for backend node position
+servers:
+  - url: http://localhost:3000
+    description: localhost
+components:
+  securitySchemes:
+    ApiKeyAuth:        
+      type: apiKey
+      in: header       
+      name: x-api-key
+  schemas:
+    requestBody:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: number
+        hp:
+          type: number
+        color:
+          type: string
+        price:
+          type: number
+    responseBody:
+      type: object
+      properties:
+        brand:
+          type: string
+        model:
+          type: string
+        year:
+          type: number
+        hp:
+          type: number
+        color:
+          type: string
+        createAt:
+          type: string
+        _id:
+          type: string
+        price:
+          type: number
+    error:
+      type: object
+      properties:
+        message:
+          type: string
+paths:
+  /:
+    get:
+      summary: Hello endpoint
+      description: ''
+      responses:
+        200:
+          description: Process successfully executed
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Hello Cognigy!"
+  /healhcheck:
+    get:
+      summary: Is alive
+      description: ''
+  /cars:
+    get:
+      security:
+        - ApiKeyAuth: [read, write]
+      summary: List of cars
+      description: 'Get a list of cars with their id, brand, model and year'
+      responses:
+        200:
+          description: Process successfully executed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    brand:
+                      type: string
+                    model:
+                      type: string
+                    year:
+                      type: number
+    post:
+      security:
+        - ApiKeyAuth: [read, write]
+      summary: Create a car
+      description: 'Create a new car with id, brand, model, year, hp and color'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestBody'
+            example:
+              model: CLA
+              brand: Mercedes
+              year: 2021
+              color: black
+              hp: 211
+              price: 60000
+      responses:
+        201:
+          description: Car created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBody'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'       
+  /cars/{id}:
+    get:
+      security:
+        - ApiKeyAuth: [read, write]
+      summary: Get a car by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id with ObjectId format
+      responses:
+        200:
+          description: Car returned correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBody'
+        404:
+          description: Car not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'  
+    post:
+      security:
+        - ApiKeyAuth: [read, write]
+      summary: Update a car by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id with ObjectId format
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestBody'
+            example:
+              model: CLA
+              brand: Mercedes
+              year: 2021
+              color: black
+              hp: 211
+              price: 60000
+      responses:
+        200:
+          description: Car updated correctly
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseBody'
+        404:
+          description: Car not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'     
+    delete:
+      security:
+        - ApiKeyAuth: [read, write]
+      summary: Delete a car by ID
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: Id with ObjectId format
+      responses:
+        200:
+          description: Car deleted correctly
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        

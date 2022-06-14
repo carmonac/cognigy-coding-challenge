@@ -13,6 +13,11 @@ import { MetadataKeys, RouterData } from "./utils/metadata.keys";
 import { Container } from "./utils/container";
 import { errorHandler } from "./middleware/error.middleware";
 import { NotFoundError } from "./utils/errors";
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs";
+
+const swaggerDocument = YAML.load("./swagger-cars.yml");
+
 export class ServerApp {
   private readonly _instance: Application;
   private process!: Server;
@@ -29,6 +34,12 @@ export class ServerApp {
     options.providers && this.registerProviders(options.providers);
     // register controllers
     options.controllers && this.registerControllers(options.controllers);
+    // register swagger
+    this._instance.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
     // register error handler
     this._instance.use(this.notFound);
     this._instance.use(errorHandler);
